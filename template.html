@@ -139,14 +139,20 @@
 
   /* ==== canvas ==== */
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
+  html { margin: 0; padding: 0; }
   /* Output is a transparent-background PNG sized to the content, not a
      fixed social-post canvas — these mockups are raw material composited
      into other assets later. body has no width/height/background of its
      own; it just wraps whatever the mockup's own card(s) size themselves
      to. Render with a generously large browser window and a transparent
      --default-background-color, then auto-crop to the alpha bounding box
-     (see "Rendering & output" in SKILL.md / trim.py). */
+     (see "Rendering & output" in SKILL.md / trim.py).
+
+     body keeps a real 32px padding on every side — DO NOT remove this.
+     A card sitting flush against the viewport edge gets its rounded
+     corner clipped by the viewport itself before the screenshot is even
+     taken; trim.py can't recover pixels that were never rendered. This
+     padding is what guarantees every corner has room to round off. */
   html, body {
     background: transparent;
     display: inline-flex;
@@ -154,6 +160,8 @@
     justify-content: flex-start;
   }
   body {
+    margin: 0;
+    padding: 32px;
     font-family: -apple-system, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
     color: var(--mkt-ink);
   }
