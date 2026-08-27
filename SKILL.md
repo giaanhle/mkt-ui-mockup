@@ -142,14 +142,12 @@ Verified against 4 reference tables (data-room engagement-tracking, fund-subscri
    python3 /path/to/mkt-ui-mockup/verify.py path/to/your-mockup.html
    ```
    Fix any reported stray hex color (use an existing token instead) before moving on. This is the mechanical check that catches color drift — don't skip it.
-5. Render **on a transparent background**, at 2x, with a browser window comfortably larger than the expected content (extra transparent margin gets trimmed in the next step — err large, not tight):
+5. Render **on a transparent background**, at 2x, with a viewport comfortably larger than the expected content (extra transparent margin gets trimmed in the next step — err large, not tight):
    ```bash
-   google-chrome --headless=new --disable-gpu \
-     --window-size=1800,1200 --force-device-scale-factor=2 \
-     --default-background-color=00000000 \
-     --screenshot=out.png file:///path/to/mockup.html
+   python3 /path/to/mkt-ui-mockup/render.py path/to/mockup.html out.png \
+     --width 1800 --height 1200 --scale 2
    ```
-   `--default-background-color=00000000` is what makes the PNG transparent instead of white. Don't drop it.
+   This tries Playwright's Python API first (finds its own managed Chromium automatically — no PATH or install-location assumptions, so it works in sandboxed environments like Cowork where Chrome isn't a `google-chrome` command on PATH), then falls back to a `google-chrome`/`chromium`/`chromium-browser` CLI binary on PATH if Playwright isn't installed. Either path produces a transparent PNG — don't call the Chrome CLI directly and don't drop the transparency flag if you ever do.
 6. **Trim to the actual content bounding box:**
    ```bash
    python3 /path/to/mkt-ui-mockup/trim.py out.png
