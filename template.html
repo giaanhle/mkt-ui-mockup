@@ -136,24 +136,30 @@
   /* ==== canvas ==== */
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
+  /* Output is a transparent-background PNG sized to the content, not a
+     fixed social-post canvas — these mockups are raw material composited
+     into other assets later. body has no width/height/background of its
+     own; it just wraps whatever the mockup's own card(s) size themselves
+     to. Render with a generously large browser window and a transparent
+     --default-background-color, then auto-crop to the alpha bounding box
+     (see "Rendering & output" in SKILL.md / trim.py). */
+  html, body {
+    background: transparent;
+    display: inline-flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
   body {
-    width: 1200px;
-    height: 627px;
-    background: var(--mkt-page-bg);
     font-family: -apple-system, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
     color: var(--mkt-ink);
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  /* ---- CONTENT STARTS HERE — replace .content with the actual mockup ---- */
+  /* ---- CONTENT STARTS HERE — replace .content with the actual mockup ----
+     .content sizes itself to whatever's inside it (no fixed width/height).
+     The mockup's card(s) (.mkt-card etc.) stay opaque white as normal —
+     only the page/canvas around them is transparent. */
   .content {
-    width: 1136px;
-    height: 579px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-flex;
     color: var(--mkt-muted);
     font-size: var(--mkt-text-15);
   }

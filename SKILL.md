@@ -134,23 +134,28 @@ Verified against 4 reference tables (data-room engagement-tracking, fund-subscri
 
 ## Build steps
 
-1. Copy `template.html` (in this skill folder) as the starting point — it already has `tokens.css` and `patterns.css` inlined and the canvas sized to 1200×627. Don't reassemble the `<style>` block from scratch.
+1. Copy `template.html` (in this skill folder) as the starting point — it already has `tokens.css` and `patterns.css` inlined, transparent background, and a content wrapper that sizes itself to whatever's inside it. Don't reassemble the `<style>` block from scratch.
 2. Replace the placeholder `.content` div with the requested screen, built from the pattern classes above and real content (real fund/investor names in the style of the reference set — e.g. "Emmerich Corporation", "Nucleus Partners Fund" — never lorem ipsum).
-3. Default canvas: **1200×627** (LinkedIn landscape), already set in the template. Only resize if the user asks for one explicitly (e.g. square 1200×1200).
+3. **Output size is not fixed.** These mockups are raw material composited into other assets later (decks, ads, other designs), not a finished social-post image at a locked canvas — let the content (one card, or several) size itself naturally. Only build to a specific fixed canvas if the user explicitly asks for one (e.g. "make it exactly 1200×627 for LinkedIn").
 4. **Run the verification script before rendering:**
    ```bash
    python3 /path/to/mkt-ui-mockup/verify.py path/to/your-mockup.html
    ```
    Fix any reported stray hex color (use an existing token instead) before moving on. This is the mechanical check that catches color drift — don't skip it.
-5. Render and export as PNG **at 2x** for crispness:
+5. Render **on a transparent background**, at 2x, with a browser window comfortably larger than the expected content (extra transparent margin gets trimmed in the next step — err large, not tight):
    ```bash
    google-chrome --headless=new --disable-gpu \
-     --window-size=1200,627 --force-device-scale-factor=2 \
+     --window-size=1800,1200 --force-device-scale-factor=2 \
+     --default-background-color=00000000 \
      --screenshot=out.png file:///path/to/mockup.html
    ```
-   This produces a 2400×1254 PNG at the correct scale — do not double the `--window-size` itself (that quadruples the output instead of doubling it).
-6. If the HTML body has outer padding around the canvas, crop the screenshot to the exact canvas bounds (e.g. with `sips --cropOffset` on macOS) so the delivered PNG has no extra margin.
-7. Deliver both the `.html` source and the exported `.png`.
+   `--default-background-color=00000000` is what makes the PNG transparent instead of white. Don't drop it.
+6. **Trim to the actual content bounding box:**
+   ```bash
+   python3 /path/to/mkt-ui-mockup/trim.py out.png
+   ```
+   This crops away the empty transparent margin from the oversized render window, keeping a small buffer so a card's soft shadow doesn't get cut off at its faint edge. This is what makes the final size match the content instead of a fixed canvas.
+7. Deliver both the `.html` source and the trimmed, transparent `.png`.
 
 ## Anti-patterns
 
@@ -161,7 +166,9 @@ Verified against 4 reference tables (data-room engagement-tracking, fund-subscri
 - ❌ Inventing a color outside `tokens.css` (e.g. a cold red instead of the verified warm coral, or a blue-tinted dark instead of the verified neutral-black tooltip bg) — including reaching for an ad-hoc gray when a chart/avatar needs a 6th color. Use `--mkt-gray-neutral` for that, not a one-off hex.
 - ❌ Dark-mode / theme-switching support — these are single fixed-light-theme static images, not a UI users interact with.
 - ❌ Rendering at 1x and calling it done — always export at 2x.
-- ❌ Leaving background page-padding baked into the delivered PNG — crop to the exact declared canvas size.
+- ❌ Rendering with a solid/white background instead of `--default-background-color=00000000` — the delivered PNG must be transparent.
+- ❌ Delivering the raw oversized render without running `trim.py` — the output should be sized to its content, not stay at the big browser-window canvas it was rendered on.
+- ❌ Forcing a fixed 1200×627 (or any other locked canvas) by default — that was the old social-post-image assumption; these are composited raw assets now. Only lock a size when the user explicitly asks for one.
 - ❌ Hand-rolling a new connector/tooltip/pill/avatar instead of using the matching class in `patterns.css` — that's exactly the drift this file exists to prevent.
 - ❌ Skipping `verify.py` before rendering — it's the one automated check this skill has; running it takes seconds.
 - ❌ Putting a border, `border-radius`, or box-shadow directly on a `<table>` — tables sit flat; use `.mkt-table` and let the surrounding card provide any framing.
