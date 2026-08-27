@@ -144,10 +144,10 @@ Verified against 4 reference tables (data-room engagement-tracking, fund-subscri
    python3 /path/to/mkt-ui-mockup/verify.py path/to/your-mockup.html
    ```
    Fix any reported stray hex color (use an existing token instead) before moving on. This is the mechanical check that catches color drift — don't skip it.
-5. Render **on a transparent background**, at 2x, with a viewport comfortably larger than the expected content (extra transparent margin gets trimmed in the next step — err large, not tight):
+5. Render **on a transparent background**, at 4x, with a viewport comfortably larger than the expected content (extra transparent margin gets trimmed in the next step — err large, not tight):
    ```bash
    python3 /path/to/mkt-ui-mockup/render.py path/to/mockup.html out.png \
-     --width 1800 --height 1200 --scale 2
+     --width 1800 --height 1200 --scale 4
    ```
    This tries Playwright's Python API first (finds its own managed Chromium automatically — no PATH or install-location assumptions, so it works in sandboxed environments like Cowork where Chrome isn't a `google-chrome` command on PATH), then falls back to a `google-chrome`/`chromium`/`chromium-browser` CLI binary on PATH if Playwright isn't installed. Either path produces a transparent PNG — don't call the Chrome CLI directly and don't drop the transparency flag if you ever do.
 6. **Trim to the actual content bounding box:**
@@ -165,7 +165,7 @@ Verified against 4 reference tables (data-room engagement-tracking, fund-subscri
 - ❌ Inlining the full `acl-web-components` bundle into an MKT mockup — this skill has zero such dependency by design; extract a single icon's SVG when truly needed, never the whole package.
 - ❌ Inventing a color outside `tokens.css` (e.g. a cold red instead of the verified warm coral, or a blue-tinted dark instead of the verified neutral-black tooltip bg) — including reaching for an ad-hoc gray when a chart/avatar needs a 6th color. Use `--mkt-gray-neutral` for that, not a one-off hex.
 - ❌ Dark-mode / theme-switching support — these are single fixed-light-theme static images, not a UI users interact with.
-- ❌ Rendering at 1x and calling it done — always export at 2x.
+- ❌ Rendering at 1x, or even 2x, and calling it done — always export at 4x (render.py's default).
 - ❌ Rendering with a solid/white background instead of `--default-background-color=00000000` — the delivered PNG must be transparent.
 - ❌ Delivering the raw oversized render without running `trim.py` — the output should be sized to its content, not stay at the big browser-window canvas it was rendered on.
 - ❌ Forcing a fixed 1200×627 (or any other locked canvas) by default — that was the old social-post-image assumption; these are composited raw assets now. Only lock a size when the user explicitly asks for one.

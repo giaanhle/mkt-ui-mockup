@@ -99,7 +99,7 @@ def main():
     parser.add_argument("out_path")
     parser.add_argument("--width", type=int, default=1800)
     parser.add_argument("--height", type=int, default=1200)
-    parser.add_argument("--scale", type=int, default=2)
+    parser.add_argument("--scale", type=int, default=4)
     args = parser.parse_args()
 
     if render_with_playwright(args.html_path, args.out_path, args.width, args.height, args.scale):

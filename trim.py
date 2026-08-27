@@ -21,7 +21,7 @@ import sys
 from PIL import Image
 
 ALPHA_THRESHOLD = 4   # ignore near-invisible shadow noise when finding the bbox
-MARGIN = 24            # px of breathing room kept around the detected content (at whatever scale the PNG was rendered at — double this if you rendered at 2x)
+MARGIN = 48            # px of breathing room kept around the detected content, at the default 4x render scale (see render.py --scale) — scale this proportionally if you render at a different factor
 
 
 def trim(path, out_path):
