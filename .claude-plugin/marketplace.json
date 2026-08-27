@@ -1,0 +1,14 @@
+{
+  "name": "mkt-plugins",
+  "owner": {
+    "name": "Anh Le"
+  },
+  "plugins": [
+    {
+      "name": "mkt-ui-mockup",
+      "source": "./plugins/mkt-ui-mockup",
+      "description": "Generates lightweight, icon-free UI mockup images of Anduin product screens for MKT social posts using a fixed, pixel-sampled token set.",
+      "version": "0.1.0"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "mkt-ui-mockup",
+  "version": "0.1.0",
+  "description": "Generates lightweight, icon-free UI mockup images of Anduin product screens for MKT social posts (LinkedIn, etc.) using a fixed, pixel-sampled token set - no component library, no external font CDN.",
+  "author": {
+    "name": "Anh Le"
+  },
+  "homepage": "https://github.com/giaanhle/mkt-ui-mockup",
+  "repository": "https://github.com/giaanhle/mkt-ui-mockup",
+  "keywords": ["mockup", "ui", "marketing", "social", "screenshot", "anduin"]
+}

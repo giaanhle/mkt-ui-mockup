@@ -1,0 +1,334 @@
+/* mkt-ui-mockup patterns.css — fixed-dimension classes for the 7 composition
+   patterns described in SKILL.md. Use these instead of hand-rolling a new
+   connector/tooltip/pill/avatar each time, so every mockup stays consistent.
+   Requires tokens.css to be loaded first (uses --mkt-* variables only). */
+
+/* ---- 1. Overlap + shadow (utility classes, no fixed markup shape) ---- */
+.mkt-card {
+  background: var(--mkt-card-bg);
+  border-radius: var(--mkt-radius-16);
+  border: 1px solid var(--mkt-border);
+}
+.mkt-card-soft {
+  background: var(--mkt-card-bg);
+  border-radius: var(--mkt-radius-12);
+  border: 1px solid var(--mkt-border);
+}
+
+/* ---- 2. Connector line + dot ---- */
+.mkt-connector {
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background: var(--mkt-blue);
+}
+.mkt-connector::after {
+  content: "";
+  position: absolute;
+  right: -4px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mkt-blue);
+}
+.mkt-connector.mkt-connector-vertical {
+  width: 2px;
+  height: 24px;
+}
+.mkt-connector.mkt-connector-vertical::after {
+  right: -3px;
+  top: -4px;
+}
+
+/* ---- 3. Border highlight ----
+   2px solid, radius 16 (not 12 — highlighted cards read as rounder than
+   plain hairline dividers in the reference set). Coral is the single
+   highlight color: one reference file used an off-palette client-brand
+   orange here, but that belongs to that fictional client's own branding,
+   not the MKT token set — always use coral, never introduce that orange. */
+.mkt-highlight-blue {
+  border: 2px solid var(--mkt-blue);
+  border-radius: var(--mkt-radius-16);
+}
+.mkt-highlight-coral {
+  border: 2px solid var(--mkt-coral);
+  border-radius: var(--mkt-radius-16);
+}
+/* Never combine a highlight border with --mkt-shadow-4 on the same card —
+   the reference set always uses one or the other. --mkt-shadow-1/2 is fine
+   alongside a highlight border if the card needs to lift slightly. */
+
+/* ---- 4. Cursor overlay ---- */
+.mkt-cursor {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+.mkt-cursor svg { width: 100%; height: 100%; }
+
+/* ---- 5. Annotation badge ---- */
+.mkt-badge-annotation {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--mkt-coral);
+  color: #fff;
+  font-size: var(--mkt-text-11);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--mkt-shadow-2);
+}
+
+/* ---- 6. Tooltip callout ---- */
+.mkt-tooltip {
+  position: relative;
+  display: inline-block;
+  background: var(--mkt-tooltip-bg);
+  color: var(--mkt-tooltip-text);
+  border-radius: var(--mkt-radius-8);
+  padding: var(--mkt-spacing-8) var(--mkt-spacing-12);
+  font-size: var(--mkt-text-12);
+  line-height: 1.5;
+  box-shadow: var(--mkt-shadow-3);
+}
+.mkt-tooltip::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 14px;
+  width: 12px;
+  height: 12px;
+  background: var(--mkt-tooltip-bg);
+  transform: rotate(45deg);
+}
+.mkt-tooltip.mkt-tooltip-top::before {
+  left: 14px;
+  top: -6px;
+}
+
+/* ---- 7. Status pill ---- */
+.mkt-pill {
+  display: inline-block;
+  font-size: var(--mkt-text-11);
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: var(--mkt-radius-full);
+}
+.mkt-pill-blue    { background: var(--mkt-blue-tint);   color: var(--mkt-blue); }
+.mkt-pill-green   { background: var(--mkt-green-tint);  color: var(--mkt-green); }
+.mkt-pill-amber   { background: var(--mkt-amber-tint);  color: var(--mkt-amber); }
+.mkt-pill-coral   { background: var(--mkt-coral-tint);  color: var(--mkt-coral); }
+.mkt-pill-purple  { background: var(--mkt-purple-tint); color: var(--mkt-purple); }
+.mkt-pill-neutral { background: var(--mkt-gray-neutral-tint); color: var(--mkt-gray-neutral); }
+.mkt-pill-gray    { background: var(--mkt-border-soft); color: var(--mkt-muted); }
+
+/* ---- colored input states (financial-data-style verify/link/flag) ---- */
+.mkt-input-verified {
+  border: 1px solid var(--mkt-green);
+  background: var(--mkt-green-tint);
+}
+.mkt-input-linked {
+  border: 1px solid var(--mkt-blue);
+  background: var(--mkt-blue-tint);
+}
+.mkt-input-flagged {
+  border: 1px solid var(--mkt-coral);
+  background: var(--mkt-coral-tint);
+}
+
+/* ---- 8. Tables ----
+   Tables never have an outer border, border-radius, or box-shadow of their
+   own — they sit flush on whatever card/page background holds them.
+   Two header styles are both real (pick per density, see SKILL.md):
+     .mkt-table              → flat header, just a bottom divider (short/simple lists)
+     .mkt-table.mkt-table-tinted → header row gets a light tinted background bar (dense/wide tables) */
+.mkt-table { width: 100%; border-collapse: collapse; }
+.mkt-table th {
+  text-align: left;
+  font-size: var(--mkt-text-11);
+  font-weight: 500;
+  color: var(--mkt-muted);
+  padding: var(--mkt-spacing-12) var(--mkt-spacing-16);
+  border-bottom: 1px solid var(--mkt-border);
+}
+.mkt-table.mkt-table-tinted th {
+  background: var(--mkt-border-soft);
+}
+.mkt-table td {
+  font-size: var(--mkt-text-13);
+  color: var(--mkt-ink);
+  padding: var(--mkt-spacing-16);
+  border-bottom: 1px solid var(--mkt-border-soft);
+  vertical-align: middle;
+}
+.mkt-table tr:last-child td { border-bottom: none; }
+/* optional vertical rule between logical column groups on wide tables */
+.mkt-table td.mkt-col-divider, .mkt-table th.mkt-col-divider {
+  border-left: 1px solid var(--mkt-border);
+}
+/* sort caret — plain CSS triangle, not an icon. Gray by default, blue when
+   that column is the active sort. */
+.mkt-sort-caret {
+  display: inline-block;
+  width: 0; height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 5px solid var(--mkt-muted);
+  margin-left: 4px;
+}
+.mkt-sort-caret.mkt-sort-active { border-bottom-color: var(--mkt-blue); }
+
+/* eyebrow label — small ALL-CAPS status/section tag. Despite being small
+   text, this is weight 700 with letter-spacing — heavier than a table
+   header even though both are --mkt-text-11. Role, not size, decides weight. */
+.mkt-eyebrow {
+  display: inline-block;
+  font-size: var(--mkt-text-11);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mkt-muted);
+}
+.mkt-eyebrow-green  { color: var(--mkt-green); }
+.mkt-eyebrow-blue   { color: var(--mkt-blue); }
+.mkt-eyebrow-amber  { color: var(--mkt-amber); }
+.mkt-eyebrow-coral  { color: var(--mkt-coral); }
+
+/* solid-fill pill — for emphasized counts/metrics in a table cell, distinct
+   from the light-tint .mkt-pill-* used for status. White text on solid color. */
+.mkt-pill-solid {
+  display: inline-block;
+  font-size: var(--mkt-text-11);
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: var(--mkt-radius-full);
+  color: #fff;
+}
+.mkt-pill-solid-blue    { background: var(--mkt-blue); }
+.mkt-pill-solid-green   { background: var(--mkt-green); }
+.mkt-pill-solid-amber   { background: var(--mkt-amber); }
+.mkt-pill-solid-coral   { background: var(--mkt-coral); }
+.mkt-pill-solid-purple  { background: var(--mkt-purple); }
+.mkt-pill-solid-neutral { background: var(--mkt-gray-neutral); }
+
+/* segmented count strip — a row of solid-color blocks each showing a number,
+   representing a breakdown (e.g. 3 submitted / 1 pending / 1 flagged / 5 open) */
+.mkt-segment-strip { display: inline-flex; }
+.mkt-segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 22px;
+  padding: 0 8px;
+  font-size: var(--mkt-text-12);
+  font-weight: 600;
+  color: #fff;
+}
+.mkt-segment-blue    { background: var(--mkt-blue); }
+.mkt-segment-green   { background: var(--mkt-green); }
+.mkt-segment-amber   { background: var(--mkt-amber); }
+.mkt-segment-coral   { background: var(--mkt-coral); }
+.mkt-segment-purple  { background: var(--mkt-purple); }
+.mkt-segment-neutral { background: var(--mkt-gray-neutral); }
+.mkt-segment-strip .mkt-segment:first-child { border-radius: var(--mkt-radius-4) 0 0 var(--mkt-radius-4); }
+.mkt-segment-strip .mkt-segment:last-child { border-radius: 0 var(--mkt-radius-4) var(--mkt-radius-4) 0; }
+
+/* plain checkbox (unchecked) for table row selection */
+.mkt-checkbox {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--mkt-radius-4);
+  border: 1.5px solid var(--mkt-border);
+  background: var(--mkt-card-bg);
+  vertical-align: middle;
+}
+
+/* ---- field row (label + value on one line) ----
+   Fixes a real bug: a label and its value written as two adjacent spans
+   with no gap render glued together ("SubjectQ3 Update..."). Always use
+   this instead of hand-rolling label/value spacing per mockup. */
+.mkt-field-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--mkt-spacing-6);
+  font-size: var(--mkt-text-13);
+}
+.mkt-field-label {
+  font-weight: 600;
+  color: var(--mkt-ink);
+  flex-shrink: 0;
+}
+.mkt-field-value {
+  color: var(--mkt-muted);
+}
+
+/* ---- toggle switch (not yet cross-verified against the full 21-file
+   corpus — added from a real product screenshot for the Email Notification
+   feature; dimensions follow the established spacing/radius scale rather
+   than a fresh pixel-sample. Track gray when off, blue when on. ---- */
+.mkt-switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+  border-radius: var(--mkt-radius-full);
+  background: var(--mkt-border);
+  vertical-align: middle;
+}
+.mkt-switch-on { background: var(--mkt-blue); }
+.mkt-switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--mkt-shadow-1);
+}
+.mkt-switch-on .mkt-switch-knob { left: 16px; }
+
+/* ---- button (same caveat as the toggle switch above) ---- */
+.mkt-button {
+  display: inline-block;
+  font-size: var(--mkt-text-13);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: var(--mkt-radius-8);
+  border: 1px solid var(--mkt-border);
+  background: var(--mkt-card-bg);
+  color: var(--mkt-ink);
+}
+.mkt-button-primary {
+  background: var(--mkt-blue);
+  border-color: var(--mkt-blue);
+  color: #fff;
+}
+
+/* ---- avatar (initial-letter circle) ---- */
+.mkt-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: var(--mkt-text-11);
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+/* fixed cycle order — see SKILL.md "Avatar palette" */
+.mkt-avatar-1 { background: var(--mkt-blue); }
+.mkt-avatar-2 { background: var(--mkt-green); }
+.mkt-avatar-3 { background: var(--mkt-amber); }
+.mkt-avatar-4 { background: var(--mkt-coral); }
+.mkt-avatar-5 { background: var(--mkt-purple); }
+.mkt-avatar-6 { background: var(--mkt-gray-neutral); }
