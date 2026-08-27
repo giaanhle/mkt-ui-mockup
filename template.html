@@ -48,8 +48,8 @@
   }
 
   /* ==== patterns.css (inlined — copy stays in sync with skill's patterns.css) ==== */
-  .mkt-card { background: var(--mkt-card-bg); border-radius: var(--mkt-radius-16); box-shadow: var(--mkt-shadow-4); }
-  .mkt-card-soft { background: var(--mkt-card-bg); border-radius: var(--mkt-radius-12); box-shadow: var(--mkt-shadow-2); }
+  .mkt-card { background: var(--mkt-card-bg); border-radius: var(--mkt-radius-16); border: 1px solid var(--mkt-border); }
+  .mkt-card-soft { background: var(--mkt-card-bg); border-radius: var(--mkt-radius-12); border: 1px solid var(--mkt-border); }
 
   .mkt-connector { position: absolute; width: 24px; height: 2px; background: var(--mkt-blue); }
   .mkt-connector::after { content: ""; position: absolute; right: -4px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--mkt-blue); }
@@ -116,6 +116,10 @@
   .mkt-segment-strip .mkt-segment:last-child { border-radius: 0 var(--mkt-radius-4) var(--mkt-radius-4) 0; }
 
   .mkt-checkbox { display: inline-block; width: 16px; height: 16px; border-radius: var(--mkt-radius-4); border: 1.5px solid var(--mkt-border); background: var(--mkt-card-bg); vertical-align: middle; }
+
+  .mkt-field-row { display: flex; align-items: baseline; gap: var(--mkt-spacing-6); font-size: var(--mkt-text-13); }
+  .mkt-field-label { font-weight: 600; color: var(--mkt-ink); flex-shrink: 0; }
+  .mkt-field-value { color: var(--mkt-muted); }
 
   .mkt-switch { position: relative; display: inline-block; width: 34px; height: 20px; border-radius: var(--mkt-radius-full); background: var(--mkt-border); vertical-align: middle; }
   .mkt-switch-on { background: var(--mkt-blue); }

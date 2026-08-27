@@ -96,7 +96,7 @@ When this comes up:
 
 These are the recurring techniques found across real MKT mockups (verified against the reference set). Each has a fixed-dimension CSS class in `patterns.css` — **use the class, don't hand-roll a new one.** That's what keeps a connector line/tooltip/badge the same size across every mockup instead of drifting slightly each time.
 
-1. **Overlap + shadow** — `.mkt-card` (or `.mkt-card-soft` for a lighter panel). Two or three cards stacked, no border, to show layered UI moments.
+1. **Overlap (flat, no shadow)** — `.mkt-card` (or `.mkt-card-soft` for a lighter panel). A hairline `--mkt-border` outline, no `box-shadow` — the delivered PNG is transparent raw material meant to be composited elsewhere, so a shadow baked into the asset would fight whatever background it lands on. Two or three cards can still be stacked/overlapped to show layered UI moments; they just don't cast a shadow doing it.
 2. **Connector line + dot** — `.mkt-connector` (add `.mkt-connector-vertical` for a vertical line). Links a trigger to the panel it opens. No icon inside — a plain dot only (see "No icons").
 3. **Border highlight** — `.mkt-highlight-blue` / `.mkt-highlight-coral`. Draws the eye to the part of the UI the post is actually about. 2px solid, radius 16 (rounder than a plain card — verified from the reference set, not the default 12). **Never combine with `--mkt-shadow-4`** on the same card; the reference set always uses border *or* heavy shadow, not both. One reference file used an off-palette client-brand orange for this border instead of coral — that belongs to that fictional client's own branding (a different, unrelated design language), not the MKT token set. Always use coral for this pattern; never introduce that orange.
 4. **Cursor overlay** — `.mkt-cursor` (position it, put an arrow-shape SVG inside). Implies an in-progress click.
@@ -105,6 +105,8 @@ These are the recurring techniques found across real MKT mockups (verified again
 7. **Colored input state** — `.mkt-input-verified` / `.mkt-input-linked` / `.mkt-input-flagged`. Real convention from MKT's fund-subscription mockups.
 
 Also in `patterns.css`: `.mkt-pill-{blue,green,amber,coral,purple,neutral,gray}` for status pills, `.mkt-avatar` + `.mkt-avatar-{1..6}` for the fixed avatar-palette cycle (see Tokens section above), and `.mkt-eyebrow` (+ `-green`/`-blue`/`-amber`/`-coral`) for a small ALL-CAPS status/section tag — see Font section for why this is weight 700 despite being small text.
+
+`.mkt-field-row` (+ `.mkt-field-label` / `.mkt-field-value`) — a label and its value on one line, e.g. "Subject: Q3 Update — Meridian Capital Fund I" or an SMTP config's "Host: ivfund.adacapital.com". **Always use this instead of two adjacent `<span>`s** — that was a real bug (label and value rendered glued together with no gap, e.g. "SubjectQ3 Update...") because nothing enforced spacing between them.
 
 `.mkt-switch`/`.mkt-switch-on` (toggle) and `.mkt-button`/`.mkt-button-primary` — **not yet cross-verified against the 21-file corpus** like the other patterns; added from a real product screenshot (Email Notification settings) because the skill had no toggle/button pattern at all yet. Dimensions follow the established spacing/radius scale rather than a fresh pixel-sample. Treat as provisional until checked against more reference material.
 
@@ -172,3 +174,5 @@ Verified against 4 reference tables (data-room engagement-tracking, fund-subscri
 - ❌ Putting a border, `border-radius`, or box-shadow directly on a `<table>` — tables sit flat; use `.mkt-table` and let the surrounding card provide any framing.
 - ❌ Using a highlight border (`.mkt-highlight-*`) together with `--mkt-shadow-4` on the same card — pick one, not both.
 - ❌ Using the light-tint `.mkt-pill-*` where the reference set uses a solid `.mkt-pill-solid-*` (emphasized counts/metrics) — they read as different levels of emphasis, don't conflate them.
+- ❌ Adding `box-shadow` back onto `.mkt-card`/`.mkt-card-soft` — the output is transparent raw material now; a baked-in shadow fights whatever background it gets composited onto. Cards get their definition from the `--mkt-border` hairline, not elevation.
+- ❌ Writing a label and its value as two adjacent `<span>`s with no gap between them — use `.mkt-field-row` (+ `.mkt-field-label`/`.mkt-field-value`). This produced a real "SubjectQ3 Update..." glued-together bug.

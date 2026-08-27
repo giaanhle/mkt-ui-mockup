@@ -7,12 +7,12 @@
 .mkt-card {
   background: var(--mkt-card-bg);
   border-radius: var(--mkt-radius-16);
-  box-shadow: var(--mkt-shadow-4);
+  border: 1px solid var(--mkt-border);
 }
 .mkt-card-soft {
   background: var(--mkt-card-bg);
   border-radius: var(--mkt-radius-12);
-  box-shadow: var(--mkt-shadow-2);
+  border: 1px solid var(--mkt-border);
 }
 
 /* ---- 2. Connector line + dot ---- */
@@ -248,6 +248,25 @@
   border: 1.5px solid var(--mkt-border);
   background: var(--mkt-card-bg);
   vertical-align: middle;
+}
+
+/* ---- field row (label + value on one line) ----
+   Fixes a real bug: a label and its value written as two adjacent spans
+   with no gap render glued together ("SubjectQ3 Update..."). Always use
+   this instead of hand-rolling label/value spacing per mockup. */
+.mkt-field-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--mkt-spacing-6);
+  font-size: var(--mkt-text-13);
+}
+.mkt-field-label {
+  font-weight: 600;
+  color: var(--mkt-ink);
+  flex-shrink: 0;
+}
+.mkt-field-value {
+  color: var(--mkt-muted);
 }
 
 /* ---- toggle switch (not yet cross-verified against the full 21-file
