@@ -157,6 +157,10 @@ Verified against 4 reference tables (data-room engagement-tracking, fund-subscri
    This crops away the empty transparent margin from the oversized render window, keeping a small buffer so a card's soft shadow doesn't get cut off at its faint edge. This is what makes the final size match the content instead of a fixed canvas.
 7. Deliver both the `.html` source and the trimmed, transparent `.png`.
 
+## Maintaining this repo (if it's also packaged as a plugin)
+
+This repo can carry a `plugins/mkt-ui-mockup/skills/mkt-ui-mockup/` copy of `SKILL.md`/`patterns.css`/`tokens.css`/`template.html`/`verify.py`/`render.py`/`trim.py` for marketplace distribution (see `plugins/mkt-ui-mockup/README.md`). If that folder exists, **edit only the repo-root copies, then run `python3 sync-plugin.py` before committing** — it copies root → plugin one-way. Skipping this is exactly how the nested copy shipped without the corner-clipping fix for a day: a real bug, not a hypothetical one.
+
 ## Anti-patterns
 
 - ❌ Embedding Inter/Onest/Golos Text (or any other substitute font) by default — SF Pro via `-apple-system` is the confirmed choice; only fall back to an embedded font if a render must happen on a non-Mac machine.
