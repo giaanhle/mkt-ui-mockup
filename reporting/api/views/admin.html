@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>mkt-ui-mockup usage dashboard</title>
+<style>
+  body { font-family: -apple-system, sans-serif; margin: 0; padding: 24px; background: #f5f6f8; color: #1a2233; }
+  h1 { font-size: 20px; }
+  table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 16px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #edeff2; font-size: 13px; }
+  th { background: #f5f6f8; font-weight: 600; }
+  .status-success { color: #4cae72; }
+  .status-verify_failed, .status-render_failed { color: #e85c5c; }
+  select, input { padding: 6px; margin-right: 8px; }
+  #counts { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+  .count-tile { background: #fff; border: 1px solid #edeff2; border-radius: 8px; padding: 10px 14px; font-size: 13px; }
+  .count-tile b { display: block; font-size: 18px; }
+</style>
+</head>
+<body>
+  <h1>mkt-ui-mockup usage</h1>
+
+  <div>
+    <select id="productFilter">
+      <option value="">All products</option>
+      <option>Fund Subscription</option>
+      <option>Data Room</option>
+      <option>IDM</option>
+      <option>Engagement Hub</option>
+      <option>Integration Hub</option>
+      <option>Investor Portal</option>
+      <option>Data Extraction</option>
+      <option>Unclassified</option>
+    </select>
+    <input id="emailFilter" placeholder="Filter by email" />
+    <button id="applyFilters">Apply</button>
+  </div>
+
+  <div id="counts"></div>
+
+  <table id="sessionsTable">
+    <thead>
+      <tr><th>Time</th><th>Email</th><th>Product</th><th>Feature</th><th>Status</th><th>Error</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function loadCounts() {
+      const res = await fetch('/admin/api/product-counts');
+      const counts = await res.json();
+      const el = document.getElementById('counts');
+      el.innerHTML = counts.map(c => `<div class="count-tile"><b>${c.count}</b>${c.product}</div>`).join('');
+    }
+
+    async function loadSessions() {
+      const product = document.getElementById('productFilter').value;
+      const email = document.getElementById('emailFilter').value;
+      const params = new URLSearchParams();
+      if (product) params.set('product', product);
+      if (email) params.set('email', email);
+      const res = await fetch('/admin/api/sessions?' + params.toString());
+      const rows = await res.json();
+      const tbody = document.querySelector('#sessionsTable tbody');
+      tbody.innerHTML = rows.map(r => `
+        <tr>
+          <td>${new Date(r.created_at).toLocaleString()}</td>
+          <td>${r.user_email}</td>
+          <td>${r.product}${r.product === 'Unclassified' && r.product_note ? ' — "' + r.product_note + '"' : ''}</td>
+          <td>${r.feature}</td>
+          <td class="status-${r.status}">${r.status}</td>
+          <td>${r.error || ''}</td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('applyFilters').addEventListener('click', loadSessions);
+    loadCounts();
+    loadSessions();
+  </script>
+</body>
+</html>
