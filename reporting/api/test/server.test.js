@@ -79,7 +79,7 @@ test('GET /api/features returns distinct feature names for a product', async () 
 test('GET /admin without a session redirects or 401s', async () => {
   const server = app.listen(0);
   const res = await request(server, 'GET', '/admin');
-  assert.ok(res.status === 401 || res.status === 302);
+  assert.strictEqual(res.status, 401);
   server.close();
 });
 
